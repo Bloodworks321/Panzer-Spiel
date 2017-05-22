@@ -6,11 +6,10 @@
 package de.uwmc.panzer;
 
 /**
- *
  * @author Patrick Wiehle
  */
 public abstract class GameObject {
-    
+
     private Coordinate objectPosition;
     private double width;
     private double height;
@@ -64,7 +63,7 @@ public abstract class GameObject {
     public void setMovingDistance(double movingDistance) {
         this.movingDistance = movingDistance;
     }
-    
+
     public boolean isLeftOf(GameObject that) {
         return this.getObjectPosition().getX() + this.getWidth() < that.getObjectPosition().getX();
     }
@@ -74,35 +73,48 @@ public abstract class GameObject {
     }
 
     public boolean touches(GameObject that) {
-        if(this.isLeftOf(that)) return false;
-        if(that.isLeftOf(this)) return false;
-        if(this.isAbove(that))  return false;
-        if(that.isAbove(this))  return false;
+        if (this.isLeftOf(that)) return false;
+        if (that.isLeftOf(this)) return false;
+        if (this.isAbove(that)) return false;
+        if (that.isAbove(this)) return false;
 
         return true;
     }
-    
+
     public static Coordinate polarToCartesianCoordinates(double angle) {
-        
+
         // X-Achse zeigt nach Osten, Y-Achse zeigt nach Süden beim Zeichnen
         double x = Math.cos(angle);
         double y = Math.sin(angle);
-        
-        return new Coordinate(x, y); 
+
+        return new Coordinate(x, y);
     }
-    
+
     public void moveGameObject() {
-        
+
         Coordinate direction = polarToCartesianCoordinates(movingAngle);
-        
-        objectPosition.setX(objectPosition.getX() + direction.getX() * movingDistance);
-        objectPosition.setY(objectPosition.getY() + direction.getY() * movingDistance);        
+        double newX = objectPosition.getX() + direction.getX() * movingDistance;
+        double newY = objectPosition.getY() + direction.getY() * movingDistance;
+        //if (!((newX < 0) || newX > 1180 - width))
+        objectPosition.setX(newX);
+        //if (!((newY < 0) || newY > 780 - height))
+        objectPosition.setY(newY);
     }
-            
+
     public void makeMove() {
         moveGameObject();
     }
-    
-    protected abstract void paintMe(java.awt.Graphics g);     
+
+    public void makeMoveFriendly() {
+        Coordinate direction = polarToCartesianCoordinates(movingAngle);
+        double newX = objectPosition.getX() + direction.getX() * movingDistance;
+        double newY = objectPosition.getY() + direction.getY() * movingDistance;
+        if (!((newX < 0) || newX > 1180 - width))
+            objectPosition.setX(newX);
+        if (!((newY < 0) || newY > 780 - height))
+            objectPosition.setY(newY);
+    }
+
+    protected abstract void paintMe(java.awt.Graphics g);
 
 }

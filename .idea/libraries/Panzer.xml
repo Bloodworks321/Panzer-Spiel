@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Panzer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/Panzer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
